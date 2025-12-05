@@ -8,26 +8,27 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@mui/material": "latest",
-    "react-router": "latest",
-    "react": "latest",
-    "@mui/icons-material": "latest",
-    "@mui/x-date-pickers": "latest",
-    "dayjs": "latest",
-    "@mui/x-data-grid": "latest",
-    "@mui/utils": "latest",
-    "@mui/x-data-grid-pro": "latest",
-    "@mui/x-date-pickers-pro": "latest",
-    "react-dom": "latest",
     "@emotion/react": "latest",
     "@emotion/styled": "latest",
+    "@mui/icons-material": "latest",
+    "@mui/material": "latest",
+    "@mui/utils": "latest",
+    "@mui/x-data-grid": "latest",
+    "@mui/x-data-grid-pro": "latest",
+    "@mui/x-date-pickers": "latest",
+    "@mui/x-date-pickers-pro": "latest",
+    "dayjs": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-router": "latest",
+    "react-router-dom": "^7.10.0",
     "typescript": "latest"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "latest",
-    "vite": "latest",
-    "@types/react-router": "latest",
     "@types/react": "latest",
-    "@types/react-dom": "latest"
+    "@types/react-dom": "latest",
+    "@types/react-router": "latest",
+    "@vitejs/plugin-react": "latest",
+    "vite": "latest"
   }
 }
