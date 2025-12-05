@@ -49,10 +49,10 @@ export default function NewChatModal() {
                     </TextField>
                     <Stack direction="row" spacing={2} justifyContent="flex-end" marginTop={2}>
                         <Button onClick={handleClose} color="secondary" variant="outlined">
-                            Annulla
+                            Cancel
                         </Button>
                         <Button onClick={handleCreate} color="primary" variant="contained">
-                            Salva
+                            Save
                         </Button>
                     </Stack>
                 </Stack>
