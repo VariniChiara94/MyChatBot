@@ -45,8 +45,6 @@ export default function Sidebar({
     const [expandedItemIds, setExpandedItemIds] = React.useState<string[]>([]);
     const {conversations, createNewConversation, clearAllConversations, activeConversationId} = useAppContext();
 
-    const currentConversation = conversations.find((conv) => conv.id === activeConversationId);
-
     const isOverSmViewport = useMediaQuery(theme.breakpoints.up('sm'));
     const isOverMdViewport = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -168,13 +166,14 @@ export default function Sidebar({
                             <SidebarHeaderItem>No conversation yet</SidebarHeaderItem>
                         ) : (
                             <>
-                                {conversations.map(chat => (
+
+                                {conversations.map(conv => (
                                     <SidebarPageItem
-                                        key={chat.id}
-                                        id={chat.id.toString()}
-                                        title={chat.title}
+                                        key={conv.id}
+                                        id={conv.id.toString()}
+                                        title={conv.title}
                                         icon={<ChatBubbleIcon/>}
-                                        href={`/chat/${chat.id}`}
+                                        selected={conv.id === activeConversationId}
                                     />
                                 ))}
                             </>

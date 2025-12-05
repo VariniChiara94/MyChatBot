@@ -5,7 +5,6 @@ import {ChatbotPngOnlyRobotIcon} from "../components/signin/CustomIcons.tsx";
 import Typography from "@mui/material/Typography";
 import InputChatBox from "../components/chat/InputChatBox.tsx";
 import {useAppContext} from "../context/AppContext.tsx";
-import {useEffect} from "react";
 
 export default function Home() {
 
