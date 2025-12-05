@@ -31,7 +31,7 @@ export default function App(props: { disableCustomTheme?: boolean }) {
                     <BrowserRouter>
                         <Routes>
                             <Route path="/" element={<SignIn />} />
-                            {/* <Route path="/home" element={<Home />} />*/}
+                            <Route path="/home" element={<Home />} />
                         </Routes>
                     </BrowserRouter>
                 </DialogsProvider>
