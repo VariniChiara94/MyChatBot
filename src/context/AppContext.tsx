@@ -1,0 +1,156 @@
+import {createContext, Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
+import {ChatModel} from "../models/ChatModel.tsx";
+
+interface AppContextType {
+    conversations: ChatModel[];
+    activeConversationId: string | null;
+    setActiveConversationId: Dispatch<SetStateAction<string | null>>;
+    isLoading: boolean;
+    setIsLoading: Dispatch<SetStateAction<boolean>>;
+    createNewConversation: () => void;
+    deleteConversation: (id: string) => void;
+    clearAllConversations: () => void;
+    getCurrentConversation: () => ChatModel | undefined;
+    setConversations: Dispatch<SetStateAction<ChatModel[]>>;
+    updateConversationTitle: (conversationId: string, title: string) => void;
+    addMessageToConversation: (conversationId: string, message: any) => void;
+}
+
+const AppContext = createContext<AppContextType>({
+    conversations: [],
+    activeConversationId: null,
+    setActiveConversationId: () => {
+    },
+    isLoading: false,
+    setIsLoading: () => {
+    },
+    createNewConversation: () => {
+    },
+    deleteConversation: () => {
+    },
+    clearAllConversations: () => {
+    },
+    getCurrentConversation: () => undefined,
+    setConversations: () => {
+    },
+    updateConversationTitle: () => {
+    },
+    addMessageToConversation: () => {
+    },
+});
+
+export const useAppContext = () => {
+    const context = useContext(AppContext);
+    if (!context) {
+        throw new Error("useApp must be used within AppContextProvider");
+    }
+    return context;
+}
+
+export const conversationsKey = "conversations";
+export const activeConversationIdKey = "activeConversationId";
+
+export const AppContextProvider = ({children}: { children: any }) => {
+
+    const [conversations, setConversations] = useState(() => {
+        const saved = localStorage.getItem(conversationsKey);
+        return saved ? JSON.parse(saved) : [];
+    })
+
+    const [activeConversationId, setActiveConversationId] = useState(() => {
+        return localStorage.getItem(activeConversationIdKey) || null;
+    })
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        localStorage.setItem(conversationsKey, JSON.stringify(conversations));
+    }, [conversations])
+
+    useEffect(() => {
+        if (activeConversationId) {
+            localStorage.setItem(activeConversationIdKey, JSON.stringify(activeConversationId));
+        } else {
+            localStorage.removeItem(activeConversationIdKey);
+        }
+
+    }, [activeConversationId])
+
+    const createNewConversation = () => {
+        const newId = conversations.length > 0 ? (Math.max(...conversations.map((c: {
+            id: string;
+        }) => parseInt(c.id))) + 1).toString() : "1";
+        const conversation: ChatModel = new ChatModel(newId, "Chat " + newId, [], new Date(Date.now()));
+
+        setConversations((prev: any) => [conversation, ...prev]);
+        setActiveConversationId(newId)
+
+    }
+
+    const deleteConversation = (id: string) => {
+        setConversations((prev: any) => prev.filter((c: { id: string; }) => c.id !== id));
+
+        if (activeConversationId === id) {
+            setActiveConversationId(null);
+        }
+    }
+
+    const clearAllConversations = () => {
+        setConversations([]);
+        setActiveConversationId(null);
+        localStorage.removeItem(conversationsKey);
+        localStorage.removeItem(activeConversationIdKey);
+    }
+
+    const getCurrentConversation = () => {
+        return conversations.find((conv: ChatModel) => conv.id !== activeConversationId);
+    }
+
+    const addMessageToConversation = (conversationId: string, message: any) => {
+        setConversations((prev: any) =>
+            prev.map((conv: ChatModel) => {
+                if (conv.id === conversationId) {
+                    return {
+                        ...conv,
+                        messages: [...conv.messages, message]
+                    }
+                } else {
+                    return conv;
+                }
+            })
+        );
+    }
+
+    const updateConversationTitle = (conversationId: string, title: string) => {
+        setConversations((prev: any) =>
+            prev.map((conv: ChatModel) => {
+                if (conv.id === conversationId) {
+                    const t = title.length > 10 ? title.substring(0, 10) + "..." : title;
+                    return {
+                        ...conv,
+                        t
+                    }
+                } else {
+                    return conv;
+                }
+            })
+        );
+    }
+
+    const contextValue = {
+        conversations,
+        activeConversationId,
+        setActiveConversationId,
+        isLoading,
+        setIsLoading,
+        createNewConversation,
+        deleteConversation,
+        clearAllConversations,
+        getCurrentConversation,
+        setConversations,
+        updateConversationTitle,
+        addMessageToConversation,
+    };
+
+    return <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
+}

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {useState} from 'react';
 import {useTheme} from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
@@ -18,7 +17,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Divider from "@mui/material/Divider";
 import DeleteIcon from '@mui/icons-material/Delete';
-import {getChats, setSessionChats} from "../../models/ChatModel.tsx";
+import {useAppContext} from "../../context/AppContext.tsx";
 
 export interface DashboardSidebarProps {
     expanded?: boolean;
@@ -44,6 +43,9 @@ export default function Sidebar({
     const theme = useTheme();
     const {pathname} = useLocation();
     const [expandedItemIds, setExpandedItemIds] = React.useState<string[]>([]);
+    const {conversations, createNewConversation, clearAllConversations, activeConversationId} = useAppContext();
+
+    const currentConversation = conversations.find((conv) => conv.id === activeConversationId);
 
     const isOverSmViewport = useMediaQuery(theme.breakpoints.up('sm'));
     const isOverMdViewport = useMediaQuery(theme.breakpoints.up('md'));
@@ -110,17 +112,6 @@ export default function Sidebar({
     const hasDrawerTransitions =
         isOverSmViewport && (!disableCollapsibleSidebar || isOverMdViewport);
 
-    /**/
-    const newChatFunction = () => {
-        setChats(prevChats => [
-            ...prevChats,
-            {id: prevChats.length + 1, title: `Chat ${prevChats.length + 1}`}
-        ]);
-        setSessionChats(chats)
-    }
-
-    const [chats, setChats] = useState(getChats());
-
     // @ts-ignore
     // @ts-ignore
     const getDrawerContent = React.useCallback(
@@ -156,31 +147,33 @@ export default function Sidebar({
                     >
 
                         {mini ? (
-                            <IconButton onClick={newChatFunction}
+                            <IconButton onClick={createNewConversation}
                                         sx={{width: "80%"}}>
                                 <AddIcon/>
                             </IconButton>
                         ) : (
                             <Button variant="outlined"
                                     startIcon={<AddIcon/>}
-                                    onClick={newChatFunction}
+                                    onClick={() => {
+                                        console.log("bbb")
+                                    }}
                                     sx={{width: "80%"}}>
                                 New Chat
                             </Button>
                         )}
 
-                        <Divider sx={{ width: mini ? MINI_DRAWER_WIDTH : "90%", my: 2 }} />
+                        <Divider sx={{width: mini ? MINI_DRAWER_WIDTH : "90%", my: 2}}/>
 
-                        {chats.length == 0 ? (
+                        {conversations.length == 0 ? (
                             <SidebarHeaderItem>No conversation yet</SidebarHeaderItem>
                         ) : (
                             <>
-                                {chats.map(chat => (
+                                {conversations.map(chat => (
                                     <SidebarPageItem
                                         key={chat.id}
                                         id={chat.id.toString()}
                                         title={chat.title}
-                                        icon={<ChatBubbleIcon />}
+                                        icon={<ChatBubbleIcon/>}
                                         href={`/chat/${chat.id}`}
                                     />
                                 ))}
@@ -188,19 +181,31 @@ export default function Sidebar({
                         )}
                     </List>
                 </Box>
-                <Box sx={{ position: 'absolute', bottom: 30, width: '100%', px: 2, height: 100, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                    <Divider sx={{ width: mini ? MINI_DRAWER_WIDTH : "90%", my: 2 }} />
+                <Box sx={{
+                    position: 'absolute',
+                    bottom: 30,
+                    width: '100%',
+                    px: 2,
+                    height: 100,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <Divider sx={{width: mini ? MINI_DRAWER_WIDTH : "90%", my: 2}}/>
                     {mini ? (
-                        <IconButton onClick={() => setChats([])}
+                        <IconButton onClick={clearAllConversations}
                                     sx={{width: "80%"}}>
-                            <DeleteIcon sx={{ color: 'red' }}/>
+                            <DeleteIcon sx={{color: 'red'}}/>
                         </IconButton>
                     ) : (
 
                         <Button
                             variant="outlined"
-                            startIcon={<DeleteIcon sx={{ color: 'red' }} />}
-                            onClick={() => setChats([])}
+                            startIcon={<DeleteIcon sx={{color: 'red'}}/>}
+                            onClick={() => {
+                                console.log("aaa")
+                            }}
                             sx={{
                                 width: "80%",
                                 borderColor: "red",
@@ -211,13 +216,13 @@ export default function Sidebar({
                                 }
                             }}
                         >
-                            <span style={{ color: 'red' }}>Clear all chats</span>
+                            <span style={{color: 'red'}}>Clear all chats</span>
                         </Button>
                     )}
                 </Box>
             </React.Fragment>
         ),
-        [mini, hasDrawerTransitions, isFullyExpanded, expandedItemIds, pathname, chats],
+        [mini, hasDrawerTransitions, isFullyExpanded, expandedItemIds, pathname, conversations],
     );
 
     const getDrawerSharedSx = React.useCallback(

@@ -11,14 +11,14 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
-import { styled } from '@mui/material/styles';
+import {styled} from '@mui/material/styles';
 import ForgotPassword from '../components/signin/ForgotPassword';
 import {ChatbotPngIcon} from '../components/signin/CustomIcons';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import ThemeSwitcher from "../components/ThemeSwitcher.tsx";
 
 
-const Card = styled(MuiCard)(({ theme }) => ({
+const Card = styled(MuiCard)(({theme}) => ({
     display: 'flex',
     flexDirection: 'column',
     alignSelf: 'center',
@@ -37,7 +37,7 @@ const Card = styled(MuiCard)(({ theme }) => ({
     }),
 }));
 
-const SignInContainer = styled(Stack)(({ theme }) => ({
+const SignInContainer = styled(Stack)(({theme}) => ({
     height: 'calc((1 - var(--template-frame-height, 0)) * 100dvh)',
     minHeight: '100%',
     padding: theme.spacing(2),
@@ -82,11 +82,11 @@ export default function SignIn() {
             event.preventDefault();
             return;
         }
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+
+        // TODO: Implement actual authentication logic here
+        // const data = new FormData(event.currentTarget);
+        // handle login with preferred method
+
         navigate('/home');
     };
 
@@ -119,8 +119,8 @@ export default function SignIn() {
     return (
         <SignInContainer direction="column" justifyContent="space-between">
             <Stack direction="row"
-                   sx={{ position: 'fixed', top: '1rem', right: '1rem' }}>
-                <ThemeSwitcher />
+                   sx={{position: 'fixed', top: '1rem', right: '1rem'}}>
+                <ThemeSwitcher/>
             </Stack>
 
             <Card variant="outlined">
@@ -128,7 +128,7 @@ export default function SignIn() {
                 <Typography
                     component="h1"
                     variant="h4"
-                    sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
+                    sx={{width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)'}}
                 >
                     Sign in
                 </Typography>
@@ -178,10 +178,10 @@ export default function SignIn() {
                         />
                     </FormControl>
                     <FormControlLabel
-                        control={<Checkbox value="remember" color="primary" />}
+                        control={<Checkbox value="remember" color="primary"/>}
                         label="Remember me"
                     />
-                    <ForgotPassword open={open} handleClose={handleClose} />
+                    <ForgotPassword open={open} handleClose={handleClose}/>
                     <Button
                         type="submit"
                         fullWidth
@@ -195,19 +195,19 @@ export default function SignIn() {
                         type="button"
                         onClick={handleClickOpen}
                         variant="body2"
-                        sx={{ alignSelf: 'center' }}
+                        sx={{alignSelf: 'center'}}
                     >
                         Forgot your password?
                     </Link>
                 </Box>
                 <Divider>or</Divider>
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    <Typography sx={{ textAlign: 'center' }}>
+                <Box sx={{display: 'flex', flexDirection: 'column', gap: 2}}>
+                    <Typography sx={{textAlign: 'center'}}>
                         Don&apos;t have an account?{' '}
                         <Link
                             href="/material-ui/getting-started/templates/sign-in/"
                             variant="body2"
-                            sx={{ alignSelf: 'center' }}
+                            sx={{alignSelf: 'center'}}
                         >
                             Sign up
                         </Link>

@@ -1,26 +1,13 @@
-
-export interface ChatModel {
-    id: number;
+export class ChatModel {
+    id: string;
     title: string;
     messages?: string[];
-}
+    createAt?: Date;
 
-const INITIAL_CHATS: ChatModel[] = [
-    {
-        id: 1,
-        title: 'ChatModel 1'
-    },
-    {
-        id: 2,
-        title: 'ChatModel 2'
+    constructor(id: string, title: string, messages?: string[], createAt?: Date) {
+        this.id = id;
+        this.title = title;
+        this.messages = messages;
+        this.createAt = createAt;
     }
-];
-
-export function getChats(): ChatModel[] {
-    const stringifiedChats = localStorage.getItem('chats');
-    return stringifiedChats ? JSON.parse(stringifiedChats) : INITIAL_CHATS;
-}
-
-export function setSessionChats(chats: ChatModel[]) {
-    return localStorage.setItem('chats', JSON.stringify(chats));
 }
