@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ListSubheader from '@mui/material/ListSubheader';
 import type {} from '@mui/material/themeCssVarsAugmentation';
-import DashboardSidebarContext from '../../context/DashboardSidebarContext.ts';
+import SidebarContext from '../../context/SidebarContext.ts';
 import { DRAWER_WIDTH } from '../../constants.ts';
 import { getDrawerSxTransitionMixin } from '../../mixins.ts';
 
@@ -12,7 +12,7 @@ export interface DashboardSidebarHeaderItemProps {
 export default function SidebarHeaderItem({
   children,
 }: DashboardSidebarHeaderItemProps) {
-  const sidebarContext = React.useContext(DashboardSidebarContext);
+  const sidebarContext = React.useContext(SidebarContext);
   if (!sidebarContext) {
     throw new Error('Sidebar context was used without a provider.');
   }

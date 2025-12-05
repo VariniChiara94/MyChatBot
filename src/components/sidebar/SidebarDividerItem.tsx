@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Divider from '@mui/material/Divider';
 import type {} from '@mui/material/themeCssVarsAugmentation';
-import DashboardSidebarContext from '../../context/DashboardSidebarContext.ts';
+import SidebarContext from '../../context/SidebarContext.ts';
 import { getDrawerSxTransitionMixin } from '../../mixins.ts';
 
 export default function SidebarDividerItem() {
-  const sidebarContext = React.useContext(DashboardSidebarContext);
+  const sidebarContext = React.useContext(SidebarContext);
   if (!sidebarContext) {
     throw new Error('Sidebar context was used without a provider.');
   }

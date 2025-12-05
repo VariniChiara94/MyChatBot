@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import type {} from '@mui/material/themeCssVarsAugmentation';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Link } from 'react-router';
-import DashboardSidebarContext from '../../context/DashboardSidebarContext.ts';
+import SidebarContext from '../../context/SidebarContext.ts';
 import { MINI_DRAWER_WIDTH } from '../../constants.ts';
 
 export interface DashboardSidebarPageItemProps {
@@ -41,7 +41,7 @@ export default function SidebarPageItem({
   disabled = false,
   nestedNavigation,
 }: DashboardSidebarPageItemProps) {
-  const sidebarContext = React.useContext(DashboardSidebarContext);
+  const sidebarContext = React.useContext(SidebarContext);
   if (!sidebarContext) {
     throw new Error('Sidebar context was used without a provider.');
   }
@@ -233,11 +233,11 @@ export default function SidebarPageItem({
                   transform: 'translateY(-50px)',
                 }}
               >
-                <DashboardSidebarContext.Provider
+                <SidebarContext.Provider
                   value={miniNestedNavigationSidebarContextValue}
                 >
                   {nestedNavigation}
-                </DashboardSidebarContext.Provider>
+                </SidebarContext.Provider>
               </Paper>
             </Box>
           </Grow>

@@ -8,7 +8,7 @@ import List from '@mui/material/List';
 import Toolbar from '@mui/material/Toolbar';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import {useLocation} from 'react-router';
-import DashboardSidebarContext from '../../context/DashboardSidebarContext.ts';
+import SidebarContext from '../../context/SidebarContext.ts';
 import {DRAWER_WIDTH, MINI_DRAWER_WIDTH} from '../../constants.ts';
 import SidebarPageItem from './SidebarPageItem.tsx';
 import SidebarHeaderItem from './SidebarHeaderItem.tsx';
@@ -259,7 +259,7 @@ export default function Sidebar({
     ]);
 
     return (
-        <DashboardSidebarContext.Provider value={sidebarContextValue}>
+        <SidebarContext.Provider value={sidebarContextValue}>
             <Drawer
                 container={container}
                 variant="temporary"
@@ -301,6 +301,6 @@ export default function Sidebar({
             >
                 {getDrawerContent('desktop')}
             </Drawer>
-        </DashboardSidebarContext.Provider>
+        </SidebarContext.Provider>
     );
 }
