@@ -7,7 +7,7 @@ interface AppContextType {
     setActiveConversationId: Dispatch<SetStateAction<string | null>>;
     isLoading: boolean;
     setIsLoading: Dispatch<SetStateAction<boolean>>;
-    createNewConversation: () => void;
+    createNewConversation: (title?: string) => string;
     deleteConversation: (id: string) => void;
     clearAllConversations: () => void;
     getCurrentConversation: () => ChatModel | undefined;
@@ -26,8 +26,7 @@ const AppContext = createContext<AppContextType>({
     isLoading: false,
     setIsLoading: () => {
     },
-    createNewConversation: () => {
-    },
+    createNewConversation: () => "",
     deleteConversation: () => {
     },
     clearAllConversations: () => {
@@ -83,17 +82,13 @@ export const AppContextProvider = ({children}: { children: any }) => {
     }, [activeConversationId])
 
     const createNewConversation = (title?: string) => {
-        const newId = conversations.length > 0 ? (Math.max(...conversations.map((c: {
-            id: string;
-        }) => parseInt(c.id))) + 1).toString() : "1";
-
-
+        const newId = crypto.randomUUID()
         const t = title && title.trim().length > 0 ? title : "Chat " + newId;
         const conversation: ChatModel = new ChatModel(newId, t, [], new Date(Date.now()));
 
         setConversations((prev: any) => [conversation, ...prev]);
         setActiveConversationId(newId)
-
+        return newId
     }
 
     const deleteConversation = (id: string) => {
@@ -121,7 +116,7 @@ export const AppContextProvider = ({children}: { children: any }) => {
                 if (conv.id === conversationId) {
                     return {
                         ...conv,
-                        messages: [...conv.messages, message]
+                        messages: Array.isArray(conv.messages) ? [...conv.messages, message] : [message]
                     }
                 } else {
                     return conv;

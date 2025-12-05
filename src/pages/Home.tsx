@@ -9,8 +9,9 @@ import NewChatModal from "../components/chat/NewChatModal.tsx";
 
 export default function Home() {
 
-    const {activeConversationId, isNewConversationModalOpen} = useAppContext();
-    const showWelcome = activeConversationId == null;
+    const {activeConversationId, isNewConversationModalOpen, conversations} = useAppContext();
+    const currentConversation = conversations.find(conv => conv.id === activeConversationId);
+    const showWelcome = (activeConversationId == null || currentConversation == undefined);
 
     return (
 

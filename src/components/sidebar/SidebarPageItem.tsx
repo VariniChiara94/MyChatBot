@@ -19,7 +19,7 @@ export interface DashboardSidebarPageItemProps {
     id: string;
     title: string;
     icon?: React.ReactNode;
-    href: string;
+    href?: string;
     action?: React.ReactNode;
     defaultExpanded?: boolean;
     expanded?: boolean;

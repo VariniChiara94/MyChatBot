@@ -7,11 +7,10 @@ import CloseIcon from '@mui/icons-material/Close';
 
 interface LoadedFileCardProps {
     file: File;
-    fileId: string;
     onDelete: () => void;
 }
 
-const LoadedFileCard: React.FC<LoadedFileCardProps> = ({file, fileId, onDelete}) => (
+const LoadedFileCard: React.FC<LoadedFileCardProps> = ({file, onDelete}) => (
     <Card sx={{display: "flex", alignItems: "center", mb: 1}}>
         <CardContent>
             <Typography variant="body1">{file.name}</Typography>

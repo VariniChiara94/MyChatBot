@@ -8,11 +8,14 @@ import {InputBase} from "@mui/material";
 import {useEffect, useState} from "react";
 import LoadedFileCard from "./LoadedFileCard.tsx";
 import Stack from "@mui/material/Stack";
+import {useAppContext} from "../../context/AppContext.tsx";
 
 export default function InputChatBox() {
 
     const [message, setMessage] = useState("");
     const [files, setFiles] = useState<{ file: File; id: string; }[]>([]);
+    const {conversations, activeConversationId, createNewConversation, addMessageToConversation} = useAppContext();
+    const currentConversation = conversations.find(conv => conv.id === activeConversationId);
 
     const handleDeleteFile = (fileId: string) => {
         console.log("Deleted file with id:", fileId);
@@ -20,8 +23,24 @@ export default function InputChatBox() {
     }
 
     const handleSendMessage = () => () => {
-        console.log("Send message:", message);
+
+        if (currentConversation) {
+            const newMessage = {id: crypto.randomUUID(), text: message, owner: "user", date: new Date()}
+            addMessageToConversation(activeConversationId ?? "", newMessage)
+            setMessage("");
+
+        } else {
+            // Create a new conversation if none is active
+            const newUuid = createNewConversation("New Conversation");
+            const newMessage = {id: crypto.randomUUID(), text: message, owner: "user", date: new Date()}
+            addMessageToConversation(newUuid ?? "", newMessage)
+            setMessage("");
+        }
     }
+
+    useEffect(() => {
+        console.log("Received message:", currentConversation)
+    }, [currentConversation?.messages]);
 
     const handleAttachFile = () => () => {
         console.log("Attached files:");
@@ -50,7 +69,6 @@ export default function InputChatBox() {
     };
 
     const handleInputFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log("File selected via input");
         if (event.target.files) {
             const selectedFiles = Array.from(event.target.files).map(file => ({file, id: crypto.randomUUID()}));
             handleFileSelect(selectedFiles);
@@ -58,7 +76,6 @@ export default function InputChatBox() {
     };
 
     useEffect(() => {
-        console.log(files);
     }, [files]);
 
     return (
@@ -115,7 +132,7 @@ export default function InputChatBox() {
                 >
                     {
                         files.map(({file, id}) => (
-                            <LoadedFileCard key={id} file={file} fileId={id} onDelete={() => handleDeleteFile(id)}/>
+                            <LoadedFileCard key={id} file={file} onDelete={() => handleDeleteFile(id)}/>
                         ))
                     }
                 </Box>

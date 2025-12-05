@@ -1,19 +1,9 @@
 import Box from "@mui/material/Box";
 import MessageCard from "./MessageCard.tsx";
-import {MessageModel} from "../../models/MessageModel.tsx";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import {useAppContext} from "../../context/AppContext.tsx";
 import Stack from "@mui/material/Stack";
-
-const messages: MessageModel[] = [
-    {id: 1, text: "Prova di test", date: new Date("2025-12-05T13:40"), owner: "user"},
-    {id: 2, text: "Risposta di test", date: new Date("2025-12-05T13:40"), owner: "bot"},
-    {id: 3, text: "Prova di test", date: new Date("2025-12-05T13:40"), owner: "user"},
-    {id: 4, text: "Risposta di test", date: new Date("2025-12-05T13:40"), owner: "bot"},
-    {id: 5, text: "Prova di test", date: new Date("2025-12-05T13:40"), owner: "user"},
-    {id: 6, text: "Risposta di test", date: new Date("2025-12-05T13:40"), owner: "bot"},
-]
 
 export default function Chat() {
 

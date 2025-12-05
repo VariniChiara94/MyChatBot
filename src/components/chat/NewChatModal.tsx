@@ -52,7 +52,7 @@ export default function NewChatModal() {
                             Cancel
                         </Button>
                         <Button onClick={handleCreate} color="primary" variant="contained">
-                            Save
+                            Add
                         </Button>
                     </Stack>
                 </Stack>
