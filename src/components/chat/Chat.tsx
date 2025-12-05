@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import MessageCard from "./MessageCard.tsx";
-import {MessageModel} from "../models/MessageModel.tsx";
+import {MessageModel} from "../../models/MessageModel.tsx";
 
 const messages: MessageModel[] = [
     { id: 1, text: "Prova di test", date: new Date("2025-12-05T13:40"), owner: "user" },

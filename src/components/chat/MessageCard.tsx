@@ -1,5 +1,5 @@
 import {Box, Typography} from "@mui/material";
-import {MessageModel} from "../models/MessageModel.tsx";
+import {MessageModel} from "../../models/MessageModel.tsx";
 
 export default function MessageCard({ message }: { message: MessageModel }) {
     const direction = message.owner === "bot" ? "start" : "end";
