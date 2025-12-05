@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SidebarContext from '../../context/SidebarContext.ts';
 import {MINI_DRAWER_WIDTH} from '../../constants.ts';
+import {useAppContext} from "../../context/AppContext.tsx";
 
 export interface DashboardSidebarPageItemProps {
     id: string;
@@ -50,17 +51,16 @@ export default function SidebarPageItem({
     } = sidebarContext;
 
     const [isHovered, setIsHovered] = React.useState(false);
+    const {setActiveConversationId} = useAppContext();
 
-    const handleClick = React.useCallback(() => {
-        if (onPageItemClick) {
-            onPageItemClick(id, !!nestedNavigation);
-        }
-    }, [onPageItemClick, id, nestedNavigation]);
+    const handleClick = () => {
+        setActiveConversationId(id)
+    }
 
     let nestedNavigationCollapseSx: SxProps<Theme> = {display: 'none'};
     if (mini && fullyCollapsed) {
         nestedNavigationCollapseSx = {
-            fontSize: 18,
+            fontSize: "1.5rem",
             position: 'absolute',
             top: '41.5%',
             right: '2px',
@@ -78,7 +78,6 @@ export default function SidebarPageItem({
                 }),
         };
     }
-
 
     const miniNestedNavigationSidebarContextValue = React.useMemo(() => {
         return {
@@ -118,7 +117,7 @@ export default function SidebarPageItem({
                     sx={{
                         height: mini ? 50 : 'auto',
                     }}
-                    {...(nestedNavigation && !mini
+                    {...(!mini
                         ? {
                             onClick: handleClick,
                         }
@@ -148,7 +147,7 @@ export default function SidebarPageItem({
                                 {!icon && mini ? (
                                     <Avatar
                                         sx={{
-                                            fontSize: 10,
+                                            fontSize: "1.5rem",
                                             height: 18,
                                             width: 16,
                                         }}

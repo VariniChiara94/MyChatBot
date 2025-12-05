@@ -40,7 +40,7 @@ export default function NewChatModal() {
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
-                <Stack direction="column" spacing={2} alignItems="center" spacing={2}>
+                <Stack direction="column" spacing={2} alignItems="center">
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         Add a new Chat
                     </Typography>

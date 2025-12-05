@@ -44,8 +44,8 @@ export default function Sidebar({
     const {pathname} = useLocation();
     const [expandedItemIds, setExpandedItemIds] = React.useState<string[]>([]);
     const {
-        conversations, clearAllConversations, activeConversationId,
-        setActiveConversationId, setIsNewConversationModalOpen
+        conversations, clearAllConversations,
+        activeConversationId, setIsNewConversationModalOpen
     } = useAppContext();
 
     const isOverSmViewport = useMediaQuery(theme.breakpoints.up('sm'));
@@ -150,16 +150,15 @@ export default function Sidebar({
                     >
 
                         {mini ? (
-                            <IconButton onClick={setIsNewConversationModalOpen(true)}
+                            <IconButton onClick={() => setIsNewConversationModalOpen(true)}
                                         sx={{width: "80%"}}>
                                 <AddIcon/>
                             </IconButton>
                         ) : (
                             <Button variant="outlined"
                                     startIcon={<AddIcon/>}
-                                    onClick={() => {
-                                        setIsNewConversationModalOpen(true)
-                                    }}
+                                    onClick={() => setIsNewConversationModalOpen(true)}
+
                                     sx={{width: "80%"}}>
                                 New Chat
                             </Button>
@@ -206,9 +205,7 @@ export default function Sidebar({
                         <Button
                             variant="outlined"
                             startIcon={<DeleteIcon sx={{color: 'red'}}/>}
-                            onClick={() => {
-                                console.log("aaa")
-                            }}
+                            onClick={clearAllConversations}
                             sx={{
                                 width: "80%",
                                 borderColor: "red",
@@ -225,7 +222,7 @@ export default function Sidebar({
                 </Box>
             </React.Fragment>
         ),
-        [mini, hasDrawerTransitions, isFullyExpanded, expandedItemIds, pathname, conversations],
+        [mini, hasDrawerTransitions, isFullyExpanded, expandedItemIds, pathname, conversations, activeConversationId],
     );
 
     const getDrawerSharedSx = React.useCallback(

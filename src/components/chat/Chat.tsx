@@ -24,7 +24,7 @@ export default function Chat() {
         <Box flexGrow={1} sx={{overflow: "hidden", height: "82vh", overflowY: "auto", paddingTop: "20px"}}>
             <Stack alignItems={"center"} alignContent={"center"}>
                 <Typography variant={"h3"} align={"center"} height={"1vh"}>
-                    {currentConversation?.title} AAAA
+                    {currentConversation?.title}
                 </Typography>
                 <Divider sx={{width: "70%", my: 5}}/>
             </Stack>
