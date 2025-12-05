@@ -39,10 +39,6 @@ export default function Chat() {
                         <MessageCard key={item.id} message={item}/>
                     ))}
 
-                    {messages.map((item) => (
-                        <MessageCard key={item.id} message={item}/>
-                    ))}
-
                 </Stack>
             </Box>
         </Box>

@@ -43,13 +43,17 @@ export default function Sidebar({
     const theme = useTheme();
     const {pathname} = useLocation();
     const [expandedItemIds, setExpandedItemIds] = React.useState<string[]>([]);
-    const {conversations, createNewConversation, clearAllConversations, activeConversationId} = useAppContext();
+    const {
+        conversations, clearAllConversations, activeConversationId,
+        setActiveConversationId, setIsNewConversationModalOpen
+    } = useAppContext();
 
     const isOverSmViewport = useMediaQuery(theme.breakpoints.up('sm'));
     const isOverMdViewport = useMediaQuery(theme.breakpoints.up('md'));
 
     const [isFullyExpanded, setIsFullyExpanded] = React.useState(expanded);
     const [isFullyCollapsed, setIsFullyCollapsed] = React.useState(!expanded);
+
 
     React.useEffect(() => {
         if (expanded) {
@@ -133,6 +137,7 @@ export default function Sidebar({
                             : {}),
                     }}
                 >
+
                     <List
                         dense
                         sx={{
@@ -145,7 +150,7 @@ export default function Sidebar({
                     >
 
                         {mini ? (
-                            <IconButton onClick={createNewConversation}
+                            <IconButton onClick={setIsNewConversationModalOpen(true)}
                                         sx={{width: "80%"}}>
                                 <AddIcon/>
                             </IconButton>
@@ -153,7 +158,7 @@ export default function Sidebar({
                             <Button variant="outlined"
                                     startIcon={<AddIcon/>}
                                     onClick={() => {
-                                        console.log("bbb")
+                                        setIsNewConversationModalOpen(true)
                                     }}
                                     sx={{width: "80%"}}>
                                 New Chat
@@ -166,7 +171,6 @@ export default function Sidebar({
                             <SidebarHeaderItem>No conversation yet</SidebarHeaderItem>
                         ) : (
                             <>
-
                                 {conversations.map(conv => (
                                     <SidebarPageItem
                                         key={conv.id}

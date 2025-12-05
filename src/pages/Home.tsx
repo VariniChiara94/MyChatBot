@@ -5,15 +5,17 @@ import {ChatbotPngOnlyRobotIcon} from "../components/signin/CustomIcons.tsx";
 import Typography from "@mui/material/Typography";
 import InputChatBox from "../components/chat/InputChatBox.tsx";
 import {useAppContext} from "../context/AppContext.tsx";
+import NewChatModal from "../components/chat/NewChatModal.tsx";
 
 export default function Home() {
 
-    const {activeConversationId} = useAppContext();
+    const {activeConversationId, isNewConversationModalOpen} = useAppContext();
     const showWelcome = activeConversationId == null;
 
     return (
 
         <HomeLayout>
+            {isNewConversationModalOpen && <NewChatModal/>}
             <Stack direction="column" spacing={2}>
                 {showWelcome ? (
                     <Stack direction={"column"} alignItems={"center"} spacing={2} paddingTop={50}>

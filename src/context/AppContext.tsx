@@ -14,6 +14,8 @@ interface AppContextType {
     setConversations: Dispatch<SetStateAction<ChatModel[]>>;
     updateConversationTitle: (conversationId: string, title: string) => void;
     addMessageToConversation: (conversationId: string, message: any) => void;
+    isNewConversationModalOpen: boolean;
+    setIsNewConversationModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const AppContext = createContext<AppContextType>({
@@ -36,6 +38,9 @@ const AppContext = createContext<AppContextType>({
     updateConversationTitle: () => {
     },
     addMessageToConversation: () => {
+    },
+    isNewConversationModalOpen: false,
+    setIsNewConversationModalOpen: () => {
     },
 });
 
@@ -62,6 +67,7 @@ export const AppContextProvider = ({children}: { children: any }) => {
     })
 
     const [isLoading, setIsLoading] = useState(false);
+    const [isNewConversationModalOpen, setIsNewConversationModalOpen] = useState(false);
 
     useEffect(() => {
         localStorage.setItem(conversationsKey, JSON.stringify(conversations));
@@ -76,11 +82,14 @@ export const AppContextProvider = ({children}: { children: any }) => {
 
     }, [activeConversationId])
 
-    const createNewConversation = () => {
+    const createNewConversation = (title?: string) => {
         const newId = conversations.length > 0 ? (Math.max(...conversations.map((c: {
             id: string;
         }) => parseInt(c.id))) + 1).toString() : "1";
-        const conversation: ChatModel = new ChatModel(newId, "Chat " + newId, [], new Date(Date.now()));
+
+
+        const t = title && title.trim().length > 0 ? title : "Chat " + newId;
+        const conversation: ChatModel = new ChatModel(newId, t, [], new Date(Date.now()));
 
         setConversations((prev: any) => [conversation, ...prev]);
         setActiveConversationId(newId)
@@ -150,6 +159,8 @@ export const AppContextProvider = ({children}: { children: any }) => {
         setConversations,
         updateConversationTitle,
         addMessageToConversation,
+        isNewConversationModalOpen,
+        setIsNewConversationModalOpen
     };
 
     return <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
