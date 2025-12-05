@@ -8,11 +8,12 @@ import {InputBase} from "@mui/material";
 
 export default function InputChatBox() {
     return (
-        <Box sx={{ position: 'absolute', bottom: 0, width: '100%', px: 2, height: "20vh", display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+        <Box sx={{ position: 'absolute', bottom: 0, width: '100%', px: 2, height: "20vh",
+            display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
             <Divider sx={{ width: "100%", my:5}} />
             <Paper
                 component="form"
-                sx={{ display: 'flex', alignItems: 'center', width: "50%", height: "30%", borderRadius: 5 }}
+                sx={{ display: 'flex', alignItems: 'center', width: "50%", height: "30%", borderRadius: 5, boxShadow:"5" }}
             >
                 <InputBase
                     sx={{ ml: 5, flex: 1, fontSize: "1.5rem" }}
