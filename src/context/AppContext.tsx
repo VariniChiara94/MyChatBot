@@ -1,8 +1,8 @@
 import {createContext, Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
-import {ChatModel} from "../models/ChatModel.tsx";
+import {ConversationModel} from "../models/ConversationModel.tsx";
 
 interface AppContextType {
-    conversations: ChatModel[];
+    conversations: ConversationModel[];
     activeConversationId: string | null;
     setActiveConversationId: Dispatch<SetStateAction<string | null>>;
     isLoading: boolean;
@@ -10,8 +10,8 @@ interface AppContextType {
     createNewConversation: (title?: string) => string;
     deleteConversation: (id: string) => void;
     clearAllConversations: () => void;
-    getCurrentConversation: () => ChatModel | undefined;
-    setConversations: Dispatch<SetStateAction<ChatModel[]>>;
+    getCurrentConversation: () => ConversationModel | undefined;
+    setConversations: Dispatch<SetStateAction<ConversationModel[]>>;
     updateConversationTitle: (conversationId: string, title: string) => void;
     addMessageToConversation: (conversationId: string, message: any) => void;
     isNewConversationModalOpen: boolean;
@@ -90,7 +90,7 @@ export const AppContextProvider = ({children}: { children: any }) => {
     const createNewConversation = (title?: string) => {
         const newId = crypto.randomUUID()
         const t = title && title.trim().length > 0 ? title : "Chat " + newId;
-        const conversation: ChatModel = new ChatModel(newId, t, [], new Date(Date.now()));
+        const conversation: ConversationModel = new ConversationModel(newId, t, [], new Date(Date.now()));
 
         setConversations((prev: any) => [conversation, ...prev]);
         setActiveConversationId(newId)
@@ -113,12 +113,12 @@ export const AppContextProvider = ({children}: { children: any }) => {
     }
 
     const getCurrentConversation = () => {
-        return conversations.find((conv: ChatModel) => conv.id !== activeConversationId);
+        return conversations.find((conv: ConversationModel) => conv.id !== activeConversationId);
     }
 
     const addMessageToConversation = (conversationId: string, message: any) => {
         setConversations((prev: any) =>
-            prev.map((conv: ChatModel) => {
+            prev.map((conv: ConversationModel) => {
                 if (conv.id === conversationId) {
                     return {
                         ...conv,
@@ -133,7 +133,7 @@ export const AppContextProvider = ({children}: { children: any }) => {
 
     const updateConversationTitle = (conversationId: string, title: string) => {
         setConversations((prev: any) =>
-            prev.map((conv: ChatModel) => {
+            prev.map((conv: ConversationModel) => {
                 if (conv.id === conversationId) {
                     const t = title.length > 10 ? title.substring(0, 10) + "..." : title;
                     return {

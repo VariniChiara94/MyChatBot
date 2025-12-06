@@ -17,6 +17,7 @@
     "@mui/x-data-grid-pro": "latest",
     "@mui/x-date-pickers": "latest",
     "@mui/x-date-pickers-pro": "latest",
+    "axios": "^1.13.2",
     "dayjs": "latest",
     "react": "latest",
     "react-dom": "latest",

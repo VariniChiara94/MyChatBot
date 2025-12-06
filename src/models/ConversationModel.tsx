@@ -1,15 +1,16 @@
 import {MessageModel} from "./MessageModel.tsx";
 
-export class ChatModel {
+export class ConversationModel {
     id: string;
     title: string;
-    messages?: MessageModel[];
     createAt?: Date;
+    messages?: MessageModel[];
+
 
     constructor(id: string, title: string, messages?: MessageModel[], createAt?: Date) {
         this.id = id;
         this.title = title;
-        this.messages = messages;
         this.createAt = createAt;
+        this.messages = messages;
     }
 }
