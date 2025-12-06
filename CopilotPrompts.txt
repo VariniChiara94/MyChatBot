@@ -1,0 +1,3 @@
+Vengono riportati di seguito i prompt più significativi rispetto all'implementazione del progetto, tuttavia sottolineo
+che ormai il mio approccio si basa principalmente su una collaborazione attiva con Copilot (Vibe coding) e che quindi lo utilizzo in maniera pervasiva.
+
