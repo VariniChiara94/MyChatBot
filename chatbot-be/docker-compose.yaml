@@ -1,0 +1,10 @@
+services:
+  chatbot-be:
+    build: .
+    image: chatbot-be:local
+    container_name: chatbot-be
+    environment:
+      - ENV=local
+      - DATA_FOLDER=/app/data
+    ports:
+      - 8090:8090
