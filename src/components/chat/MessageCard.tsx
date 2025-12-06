@@ -1,12 +1,14 @@
-import {Box, Card, Typography} from "@mui/material";
+import {Box, Button, Card, Typography} from "@mui/material";
 import {MessageModel} from "../../models/MessageModel.tsx";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import PersonIcon from '@mui/icons-material/Person';
+import {useAppContext} from "../../context/AppContext.tsx";
 
 export default function MessageCard({message}: { message: MessageModel }) {
     const direction = message.owner === "bot" ? "start" : "end";
     const alignDate = direction === "end" ? "flex-end" : "flex-start";
+    const {setShowReferenceModal} = useAppContext();
     return (
 
         <Box display={"flex"}
@@ -34,6 +36,11 @@ export default function MessageCard({message}: { message: MessageModel }) {
                         <Typography>
                             Attached files: {message.files.map(file => file.name).join(", ")}
                         </Typography>
+                    )}
+                    {message.references && message.references.length > 0 && (
+                        <Button variant="contained" size="small" onClick={() => setShowReferenceModal?.(true)}>
+                            References
+                        </Button>
                     )}
                 </Stack>
 

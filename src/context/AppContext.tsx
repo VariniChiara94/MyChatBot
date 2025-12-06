@@ -16,6 +16,8 @@ interface AppContextType {
     addMessageToConversation: (conversationId: string, message: any) => void;
     isNewConversationModalOpen: boolean;
     setIsNewConversationModalOpen: Dispatch<SetStateAction<boolean>>;
+    showReferenceModal?: boolean;
+    setShowReferenceModal?: Dispatch<SetStateAction<boolean>>;
 }
 
 const AppContext = createContext<AppContextType>({
@@ -40,6 +42,9 @@ const AppContext = createContext<AppContextType>({
     },
     isNewConversationModalOpen: false,
     setIsNewConversationModalOpen: () => {
+    },
+    showReferenceModal: false,
+    setShowReferenceModal: () => {
     },
 });
 
@@ -67,6 +72,7 @@ export const AppContextProvider = ({children}: { children: any }) => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [isNewConversationModalOpen, setIsNewConversationModalOpen] = useState(false);
+    const [showReferenceModal, setShowReferenceModal] = useState(false);
 
     useEffect(() => {
         localStorage.setItem(conversationsKey, JSON.stringify(conversations));
@@ -155,7 +161,9 @@ export const AppContextProvider = ({children}: { children: any }) => {
         updateConversationTitle,
         addMessageToConversation,
         isNewConversationModalOpen,
-        setIsNewConversationModalOpen
+        setIsNewConversationModalOpen,
+        showReferenceModal,
+        setShowReferenceModal
     };
 
     return <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>

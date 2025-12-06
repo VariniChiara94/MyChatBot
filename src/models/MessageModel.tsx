@@ -4,4 +4,5 @@ export interface MessageModel {
     date: Date;
     owner: 'user' | 'bot';
     files?: File[];
+    references?: string[];
 }

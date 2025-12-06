@@ -6,17 +6,18 @@ import Typography from "@mui/material/Typography";
 import InputChatBox from "../components/chat/InputChatBox.tsx";
 import {useAppContext} from "../context/AppContext.tsx";
 import NewChatModal from "../components/chat/NewChatModal.tsx";
+import ReferencesModal from "../components/chat/ReferencesModal.tsx";
 
 export default function Home() {
 
-    const {activeConversationId, isNewConversationModalOpen, conversations} = useAppContext();
+    const {activeConversationId, isNewConversationModalOpen, conversations, showReferenceModal} = useAppContext();
     const currentConversation = conversations.find(conv => conv.id === activeConversationId);
     const showWelcome = (activeConversationId == null || currentConversation == undefined);
-
     return (
 
         <HomeLayout>
             {isNewConversationModalOpen && <NewChatModal/>}
+            {showReferenceModal && <ReferencesModal/>}
             <Stack direction="column" spacing={2}>
                 {showWelcome ? (
                     <Stack direction={"column"} alignItems={"center"} spacing={2} paddingTop={50}>
