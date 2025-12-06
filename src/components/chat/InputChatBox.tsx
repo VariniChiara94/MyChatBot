@@ -18,33 +18,33 @@ export default function InputChatBox() {
     const currentConversation = conversations.find(conv => conv.id === activeConversationId);
 
     const handleDeleteFile = (fileId: string) => {
-        console.log("Deleted file with id:", fileId);
         setFiles(prevFiles => prevFiles.filter(f => f.id !== fileId));
     }
 
     const handleSendMessage = () => () => {
 
         if (currentConversation) {
-            const newMessage = {id: crypto.randomUUID(), text: message, owner: "user", date: new Date()}
+            const newMessage = {
+                id: crypto.randomUUID(), text: message, owner: "user", date: new Date(),
+                files: files.length > 0 ? files.map(f => f.file) : []
+            }
             addMessageToConversation(activeConversationId ?? "", newMessage)
             setMessage("");
+            setFiles([]);
 
         } else {
             // Create a new conversation if none is active
             const newUuid = createNewConversation("New Conversation");
-            const newMessage = {id: crypto.randomUUID(), text: message, owner: "user", date: new Date()}
+
+            const newMessage = {
+                id: crypto.randomUUID(), text: message, owner: "user", date: new Date(),
+                files: files.length > 0 ? files.map(f => f.file) : []
+            }
             addMessageToConversation(newUuid ?? "", newMessage)
             setMessage("");
+            setFiles([]);
         }
     }
-
-    useEffect(() => {
-        console.log("Received message:", currentConversation)
-    }, [currentConversation?.messages]);
-
-    const handleAttachFile = () => () => {
-        console.log("Attached files:");
-    };
 
     const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
         event.preventDefault();
@@ -115,7 +115,7 @@ export default function InputChatBox() {
                     </IconButton>
 
                     <IconButton color="primary" sx={{p: '20px', fontSize: '1.7rem', mr: 4}} aria-label="directions"
-                                onClick={handleAttachFile()} component="label">
+                                component="label">
                         <AttachFileIcon sx={{fontSize: "inherit"}}/>
                         <input type="file" hidden multiple onChange={handleInputFile}/>
                     </IconButton>
