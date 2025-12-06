@@ -29,7 +29,10 @@ export default function MessageCard({message}: { message: MessageModel }) {
                     </Card>
                     <Typography variant={"caption"}>
                         {message.date
-                            ? `${message.date.getDate().toString().padStart(2, "0")}/${(message.date.getMonth() + 1).toString().padStart(2, "0")} ${message.date.getHours().toString().padStart(2, "0")}:${message.date.getMinutes().toString().padStart(2, "0")}`
+                            ? (() => {
+                                const dateObj = message.date instanceof Date ? message.date : new Date(message.date);
+                                return `${dateObj.getDate().toString().padStart(2, "0")}/${(dateObj.getMonth() + 1).toString().padStart(2, "0")} ${dateObj.getHours().toString().padStart(2, "0")}:${dateObj.getMinutes().toString().padStart(2, "0")}`;
+                            })()
                             : ""}
                     </Typography>
                     {message.files && message.files.length > 0 && (
