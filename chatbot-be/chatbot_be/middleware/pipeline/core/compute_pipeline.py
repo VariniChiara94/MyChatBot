@@ -19,7 +19,7 @@ class CorePipeline(AbstractPipeline):
         super().__init__()
         self.settings = get_settings()
 
-    async def data_quality(self, data, params_json):
+    async def data_quality(self, data):
         """
         Performs data quality checks on the input data.
 

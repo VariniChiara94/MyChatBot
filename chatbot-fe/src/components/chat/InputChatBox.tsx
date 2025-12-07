@@ -14,8 +14,13 @@ export default function InputChatBox() {
 
     const [message, setMessage] = useState("");
     const [files, setFiles] = useState<{ file: File; id: string; }[]>([]);
-    const {conversations, activeConversationId, createNewConversation, addMessageToConversation} = useAppContext();
-    const currentConversation = conversations.find(conv => conv.id === activeConversationId);
+    const {
+        getCurrentConversation,
+        createNewConversation,
+        addMessageToConversation,
+        activeConversationId
+    } = useAppContext();
+    const currentConversation = getCurrentConversation();
 
     const handleDeleteFile = (fileId: string) => {
         setFiles(prevFiles => prevFiles.filter(f => f.id !== fileId));

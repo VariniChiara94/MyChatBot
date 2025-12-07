@@ -7,12 +7,35 @@ import InputChatBox from "../components/chat/InputChatBox.tsx";
 import {useAppContext} from "../context/AppContext.tsx";
 import NewChatModal from "../components/chat/NewChatModal.tsx";
 import ReferencesModal from "../components/chat/ReferencesModal.tsx";
+import {useEffect} from "react";
+import {getUserConversations} from "../apis/ai-backend/AIBackendService.tsx";
 
 export default function Home() {
 
-    const {activeConversationId, isNewConversationModalOpen, conversations, showReferenceModal} = useAppContext();
-    const currentConversation = conversations.find(conv => conv.id === activeConversationId);
+    const {
+        activeConversationId,
+        isNewConversationModalOpen,
+        getCurrentConversation,
+        showReferenceModal,
+        setConversations
+    } = useAppContext();
+    const currentConversation = getCurrentConversation();
     const showWelcome = (activeConversationId == null || currentConversation == undefined);
+
+    useEffect(() => {
+
+        const fetchUserConversations = async () => {
+            try {
+                const conv = await getUserConversations();
+                setConversations(conv)
+            } catch {
+                //TODO handle error
+            }
+
+        }
+        fetchUserConversations();
+    }, []);
+
     return (
 
         <HomeLayout>

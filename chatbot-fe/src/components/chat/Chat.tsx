@@ -7,8 +7,8 @@ import Stack from "@mui/material/Stack";
 
 export default function Chat() {
 
-    const {conversations, activeConversationId} = useAppContext();
-    const currentConversation = conversations.find(conv => conv.id === activeConversationId);
+    const {getCurrentConversation} = useAppContext();
+    const currentConversation = getCurrentConversation();
 
     return (
         <Box flexGrow={1} sx={{overflow: "hidden", height: "82vh", overflowY: "auto", paddingTop: "20px"}}>

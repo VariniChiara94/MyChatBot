@@ -3,7 +3,6 @@ import Modal from '@mui/material/Modal';
 import Stack from "@mui/material/Stack";
 import Link from "@mui/material/Link";
 import {useAppContext} from "../../context/AppContext.tsx";
-import {useEffect} from "react";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import {List, ListItem} from "@mui/material";
@@ -23,17 +22,16 @@ export default function ReferencesModal() {
         p: 4,
     };
 
-    const {setShowReferenceModal, getCurrentConversation} = useAppContext();
+    const {
+        setShowReferenceModal,
+        getCurrentConversation,
+        currentMessageId
+    } = useAppContext();
     const handleClose = () => setShowReferenceModal?.(false);
 
     const conversation = getCurrentConversation();
-    const lastMessageReferences = conversation?.messages?.length
-        ? conversation.messages[conversation.messages.length - 1].references
-        : undefined;
+    const messageReferences = conversation?.messages?.find(m => m.id === currentMessageId)?.references;
 
-    useEffect(() => {
-        console.log(lastMessageReferences);
-    }, []);
     return (
 
         <Modal
@@ -49,7 +47,7 @@ export default function ReferencesModal() {
                     </Typography>
                     <Divider sx={{width: "80%", my: 5}}/>
                     <List sx={{width: "100%"}}>
-                        {lastMessageReferences?.map((ref, index) => (
+                        {messageReferences?.map((ref, index) => (
                             <ListItem key={index} disablePadding>
                                 <Typography variant="body1" component="span" sx={{mr: 1}}>
                                     {index + 1}.

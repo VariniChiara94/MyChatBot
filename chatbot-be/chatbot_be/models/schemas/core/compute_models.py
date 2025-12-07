@@ -1,6 +1,8 @@
 from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+
+from chatbot_be.models.entities.conversations.conversation_entities import Message
 from chatbot_be.models.validators.core.compute_validators import ComputeValidators
 
 
@@ -9,12 +11,11 @@ class ComputeRequest(BaseModel):
     Input model for the compute endpoint.
 
     Attributes:
-        data1 (str): The primary input data.
-        data2 (Optional[str]): The secondary input data, optional.
+        message (Message): The message containing the user question to be processed by the LLM.
     """
 
-    data1: str
-    data2: Optional[str] = Field(default=None)
+    message: Message
+    engine: Optional[str] = Field(default="mocked")
 
     @model_validator(mode="after")
     def model_validate(cls, value):

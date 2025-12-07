@@ -22,15 +22,16 @@ To test the application, follow these steps:
 - Show user info on the frontend
 - add Logout functionality
 
-### Chat Features
+### Frontend
 - delete single chat
 - change chat title
 - save/download chat 
 - add spinning loader when waiting for response
+- add documents download feature
 
 ### Backend
 - use real LLM like OpenAI, langchain etc. instead of mock model
-- use a DB instead of in-memory storage for chats and messages
+- use a storage service (i.e. S3) instead of in-memory storage for chats and messages
 - integrate JWT validation for user authentication
 - use Celery to handle long-running tasks asynchronously
 - implement rate limiting to prevent abuse

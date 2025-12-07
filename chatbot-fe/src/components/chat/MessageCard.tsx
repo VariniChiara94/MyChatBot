@@ -8,7 +8,13 @@ import {useAppContext} from "../../context/AppContext.tsx";
 export default function MessageCard({message}: { message: MessageModel }) {
     const direction = message.owner === "bot" ? "start" : "end";
     const alignDate = direction === "end" ? "flex-end" : "flex-start";
-    const {setShowReferenceModal} = useAppContext();
+    const {setShowReferenceModal, setCurrentMessageId} = useAppContext();
+
+    const handleReferenceClicked = () => {
+        setCurrentMessageId?.(message.id);
+        setShowReferenceModal?.(true);
+    }
+
     return (
 
         <Box display={"flex"}
@@ -41,7 +47,7 @@ export default function MessageCard({message}: { message: MessageModel }) {
                         </Typography>
                     )}
                     {message.references && message.references.length > 0 && (
-                        <Button variant="contained" size="small" onClick={() => setShowReferenceModal?.(true)}>
+                        <Button variant="contained" size="small" onClick={handleReferenceClicked}>
                             References
                         </Button>
                     )}
