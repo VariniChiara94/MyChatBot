@@ -9,6 +9,9 @@ import {useEffect, useState} from "react";
 import LoadedFileCard from "./LoadedFileCard.tsx";
 import Stack from "@mui/material/Stack";
 import {useAppContext} from "../../context/AppContext.tsx";
+import {submitQuestion} from "../../apis/ai-backend/AIBackendService.tsx";
+import {SubmitQuestionRequest} from "../../apis/ai-backend/requests/SubmitQuestionRequest.tsx";
+import {MessageModel} from "../../models/MessageModel.tsx";
 
 export default function InputChatBox() {
 
@@ -18,7 +21,8 @@ export default function InputChatBox() {
         getCurrentConversation,
         createNewConversation,
         addMessageToConversation,
-        activeConversationId
+        activeConversationId,
+        setCurrentMessageId
     } = useAppContext();
     const currentConversation = getCurrentConversation();
 
@@ -28,27 +32,40 @@ export default function InputChatBox() {
 
     const handleSendMessage = () => () => {
 
+        const newMessage: MessageModel = {
+            id: crypto.randomUUID(), text: message, owner: "user", date: new Date(),
+            files: files.length > 0 ? files.map(f => f.file) : []
+        }
+        let convId = activeConversationId
         if (currentConversation) {
-            const newMessage = {
-                id: crypto.randomUUID(), text: message, owner: "user", date: new Date(),
-                files: files.length > 0 ? files.map(f => f.file) : []
-            }
-            addMessageToConversation(activeConversationId ?? "", newMessage)
+
+            addMessageToConversation(convId ?? "", newMessage)
             setMessage("");
             setFiles([]);
 
         } else {
             // Create a new conversation if none is active
             const newUuid = createNewConversation("New Conversation");
-
-            const newMessage = {
-                id: crypto.randomUUID(), text: message, owner: "user", date: new Date(),
-                files: files.length > 0 ? files.map(f => f.file) : []
-            }
             addMessageToConversation(newUuid ?? "", newMessage)
             setMessage("");
             setFiles([]);
+            convId = newUuid;
         }
+
+        const request: SubmitQuestionRequest = {
+            message: newMessage
+        };
+
+        submitQuestion(request).then(response => {
+            if (response && response.data && response.data.message) {
+
+                const answer = response.data.message;
+                addMessageToConversation(convId!, answer);
+                setCurrentMessageId(answer.id);
+                setMessage("");
+                setFiles([]);
+            }
+        });
     }
 
     const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {

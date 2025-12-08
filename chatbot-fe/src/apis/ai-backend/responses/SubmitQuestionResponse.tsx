@@ -1,5 +1,8 @@
-export interface SubmitQuestionResponse {
-    userId: string;
-    response: string;
-    references?: string[];
+import {MessageModel} from "../../../models/MessageModel";
+
+export class SubmitQuestionResponse {
+    data: { message: MessageModel; } | undefined;
+    details: string | undefined;
+    app_status_code: number | undefined;
 }
+

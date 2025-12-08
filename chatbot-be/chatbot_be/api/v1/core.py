@@ -1,3 +1,4 @@
+from functools import lru_cache
 from typing import Annotated, List
 
 from fastapi import APIRouter, BackgroundTasks, Depends, Query, UploadFile, File
@@ -17,7 +18,8 @@ core_router = APIRouter(
 )
 
 
-@core_router.post("/compute")
+@lru_cache(maxsize=10)
+@core_router.post("/compute/multipart")
 async def core_compute(
     req: ComputeRequest,
     files: List[UploadFile] = File(...),
@@ -51,6 +53,39 @@ async def core_compute(
     return AppResponse[ComputeDataResponse](data=output_data,
                                             details="Endpoint /api/v1/core/compute endend successfully",
                                             app_status_code=status_code.APP_200_OK)
+
+@core_router.post("/compute")
+async def core_compute(
+    req: ComputeRequest,
+    core_pipeline=Depends(get_core_pipeline),
+    settings: Settings = Depends(get_settings)
+) -> AppResponse[ComputeDataResponse]:
+    """
+    Handles the computation request for the core pipeline.
+
+    Args:
+        req (ComputeRequest): The request object containing the user message to be processed and the LLM engine to be used.
+        core_pipeline: Dependency injection for the core pipeline instance.
+        settings (Settings): Application settings.
+
+    Returns:
+        AppResponse[ComputeDataResponse]: A response object containing the computation results.
+    """
+    req_json = req.model_dump()
+    try:
+        data_clean = await core_pipeline.data_quality(req_json)
+        data_preprocessed = await core_pipeline.preprocess_input(data_clean)
+        model_result = await core_pipeline.get_model_result(data_preprocessed)
+        out = await core_pipeline.prepare_output(model_result, req)
+        output_data = ComputeDataResponse(**out)
+    except Exception as e:
+        end_task(req_json, {f"Error 500: {repr(e)}"}, settings)
+        raise e
+
+    return AppResponse[ComputeDataResponse](data=output_data,
+                                            details="Endpoint /api/v1/core/compute endend successfully",
+                                            app_status_code=status_code.APP_200_OK)
+
 
 
 @core_router.get("/get")

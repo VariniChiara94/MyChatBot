@@ -1,5 +1,5 @@
 export interface MessageModel {
-    id: number;
+    id: string;
     text: string;
     date: Date;
     owner: 'user' | 'bot';

@@ -26,20 +26,28 @@ export const getUserConversations = async (): Promise<ConversationModel[]> => {
 
 export const submitQuestion = async (
     request: SubmitQuestionRequest,
-): Promise<SubmitQuestionResponse> => {
+): Promise<SubmitQuestionResponse | undefined> => {
 
-    try {
-        const response = await apiClient.post(`/v1/question`, request);
+    if (request.files && request.files.length > 0) {
+        //preform multipart/form-data request
+    } else {
+        //perform regular json request
+        try {
+            //console.log(request);
+            const response = await apiClient.post(`/v1/core/compute`, request);
 
-        if (response.status !== 200) {
-            console.error("Error getting response for your question", response.status);
+            if (response.status !== 200) {
+                console.error("Error getting response for your question", response.status);
+            }
+
+            return response.data as SubmitQuestionResponse;
+        } catch (error: any) {
+            console.error("Error getting response for your question catch", error);
+            throw error;
         }
-
-        return response.data as SubmitQuestionResponse;
-    } catch (error: any) {
-        console.error("Error getting response for your question catch", error);
-        throw error;
     }
+
+
 };
 
 

@@ -12,6 +12,7 @@ class ComputeRequest(BaseModel):
 
     Attributes:
         message (Message): The message containing the user question to be processed by the LLM.
+        engine (Optional[str]): The engine to be used for computation, defaults to "mocked".
     """
 
     message: Message
@@ -33,12 +34,10 @@ class ComputeDataResponse(BaseModel):
     Output model for the compute endpoint.
 
     Attributes:
-        data1 (str): The primary output data.
-        data2 (Optional[str]): The secondary output data, optional.
+        message (Message): The processed message returned by the LLM.
     """
 
-    data1: str
-    data2: Optional[str] = Field(default=None)
+    message: Message
     
     @model_validator(mode="after")
     def model_validate(cls, value):

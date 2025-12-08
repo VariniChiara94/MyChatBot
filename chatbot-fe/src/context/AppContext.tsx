@@ -18,8 +18,8 @@ interface AppContextType {
     setIsNewConversationModalOpen: Dispatch<SetStateAction<boolean>>;
     showReferenceModal?: boolean;
     setShowReferenceModal?: Dispatch<SetStateAction<boolean>>;
-    currentMessageId: number;
-    setCurrentMessageId: Dispatch<SetStateAction<number>>;
+    currentMessageId: string;
+    setCurrentMessageId: Dispatch<SetStateAction<string>>;
 }
 
 const AppContext = createContext<AppContextType>({
@@ -48,7 +48,7 @@ const AppContext = createContext<AppContextType>({
     showReferenceModal: false,
     setShowReferenceModal: () => {
     },
-    currentMessageId: 0,
+    currentMessageId: "",
     setCurrentMessageId: () => {
     }
 });
@@ -78,7 +78,7 @@ export const AppContextProvider = ({children}: { children: any }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isNewConversationModalOpen, setIsNewConversationModalOpen] = useState(false);
     const [showReferenceModal, setShowReferenceModal] = useState(false);
-    const [currentMessageId, setCurrentMessageId] = useState<number>(0);
+    const [currentMessageId, setCurrentMessageId] = useState<string>("");
 
     useEffect(() => {
         localStorage.setItem(conversationsKey, JSON.stringify(conversations));
@@ -99,8 +99,14 @@ export const AppContextProvider = ({children}: { children: any }) => {
         const conversation: ConversationModel = new ConversationModel(newId, t, [], new Date(Date.now()));
 
         setConversations((prev: any) => [conversation, ...prev]);
-        setActiveConversationId(newId)
+        updateActiveConversationId(newId)
         return newId
+    }
+
+    const updateActiveConversationId = (id: string | null) => {
+        setActiveConversationId(id);
+        localStorage.setItem(activeConversationIdKey, id!);
+
     }
 
     const deleteConversation = (id: string) => {
