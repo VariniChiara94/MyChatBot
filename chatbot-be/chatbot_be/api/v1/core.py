@@ -1,7 +1,8 @@
+import json
 from functools import lru_cache
 from typing import Annotated, List
 
-from fastapi import APIRouter, BackgroundTasks, Depends, Query, UploadFile, File
+from fastapi import APIRouter, BackgroundTasks, Depends, Query, UploadFile, File, Form
 
 from chatbot_be.config import Settings, get_settings
 from chatbot_be.models.commons import AppResponse
@@ -20,8 +21,8 @@ core_router = APIRouter(
 
 @lru_cache(maxsize=10)
 @core_router.post("/compute/multipart")
-async def core_compute(
-    req: ComputeRequest,
+async def core_compute_multipart(
+    req: str = Form(...),
     files: List[UploadFile] = File(...),
     core_pipeline=Depends(get_core_pipeline),
     settings: Settings = Depends(get_settings)
@@ -30,7 +31,7 @@ async def core_compute(
     Handles the computation request for the core pipeline.
 
     Args:
-        req (ComputeRequest): The request object containing the user message to be processed and the LLM engine to be used.
+        req (ComputeRequest as str to handling multipart/form-data): The request object containing the user message to be processed and the LLM engine to be used.
         files (List[UploadFile]): The list of uploaded files.
         core_pipeline: Dependency injection for the core pipeline instance.
         settings (Settings): Application settings.
@@ -38,16 +39,17 @@ async def core_compute(
     Returns:
         AppResponse[ComputeDataResponse]: A response object containing the computation results.
     """
-    req_json = req.model_dump()
+    req_obj = ComputeRequest(**json.loads(req))
+
     try:
-        await save_files(req_json, files, settings)
-        data_clean = await core_pipeline.data_quality(req_json)
+        await save_files(req_obj, files, settings)
+        data_clean = await core_pipeline.data_quality(req_obj)
         data_preprocessed = await core_pipeline.preprocess_input(data_clean)
         model_result = await core_pipeline.get_model_result(data_preprocessed)
-        out = await core_pipeline.prepare_output(model_result, req)
+        out = await core_pipeline.prepare_output(model_result, req_obj)
         output_data = ComputeDataResponse(**out)
     except Exception as e:
-        end_task(req_json, {f"Error 500: {repr(e)}"}, settings)
+        end_task(req_obj, {f"Error 500: {repr(e)}"}, settings)
         raise e
 
     return AppResponse[ComputeDataResponse](data=output_data,

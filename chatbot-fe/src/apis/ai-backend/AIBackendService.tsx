@@ -30,6 +30,35 @@ export const submitQuestion = async (
 
     if (request.files && request.files.length > 0) {
         //preform multipart/form-data request
+        try {
+
+            const formData = new FormData();
+            formData.append('req', JSON.stringify({
+                message: {
+                    id: request.message!.id,
+                    text: request.message!.text,
+                    date: request.message!.date,
+                    owner: request.message!.owner
+                },
+                engine: request.engine
+            }));
+            request.files.forEach((file: File) => {
+                formData.append('files', file, file.name);
+            });
+
+            //console.log(request);
+            const headers = {headers: {'Content-Type': 'multipart/form-data'}}
+            const response = await apiClient.post(`/v1/core/compute/multipart`, formData, headers);
+
+            if (response.status !== 200) {
+                console.error("Error getting response for your question", response.status);
+            }
+
+            return response.data as SubmitQuestionResponse;
+        } catch (error: any) {
+            console.error("Error getting response for your question catch", error);
+            throw error;
+        }
     } else {
         //perform regular json request
         try {

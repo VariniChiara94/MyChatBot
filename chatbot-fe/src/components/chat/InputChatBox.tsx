@@ -53,7 +53,8 @@ export default function InputChatBox() {
         }
 
         const request: SubmitQuestionRequest = {
-            message: newMessage
+            message: newMessage,
+            files: files.map(f => f.file)
         };
 
         submitQuestion(request).then(response => {
