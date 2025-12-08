@@ -24,7 +24,7 @@ COPY data data
 COPY README.md README.md
 
 RUN apt-get update && apt-get install -y curl && \
-    python3.11 -m pip install --upgrade pip setuptools wheel
+    python3.12 -m pip install --upgrade pip setuptools wheel
 # System deps:
 RUN curl -sSL https://install.python-poetry.org | python3 -
 
@@ -33,6 +33,7 @@ COPY poetry.lock poetry.lock
 COPY pyproject.toml pyproject.toml
 
 RUN poetry install --no-interaction --no-ansi --without dev
+RUN pip install python-multipart
 
 COPY entrypoint.sh entrypoint.sh
 RUN ["chmod", "+x", "./entrypoint.sh"]
