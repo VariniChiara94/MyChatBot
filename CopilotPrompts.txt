@@ -1,3 +1,12 @@
-Vengono riportati di seguito i prompt più significativi rispetto all'implementazione del progetto, tuttavia sottolineo
-che ormai il mio approccio si basa principalmente su una collaborazione attiva con Copilot (Vibe coding) e che quindi lo utilizzo in maniera pervasiva.
+Il progetto è stato sviluppato seguendo questi passi:
+ 1. partire da template si FE che BE strutturati e perfezionati in questi anni di lavoro
+ 2. implementazione "grezza" della feature che volevo realizzare (i.e. componente visualizzazione messaggio)
+ 3. collaborazione attiva e pervasiva con Copilot (stile vibe coding) per smarcare gli errori di compilazione e/o funzionamento
+ facendo direttamente la domanda descrivendo cosa stesse accadando (i.e. perchè la MessageCard non visualizza correttamente la data del messaggio?)
+ 4. refactoring del codice con il consiglio di copilot (90% delle volte corretto)
+
+ In sostanza copilot è stato usato per:
+    1. risolvere errori di compilazione
+    2. risolvere errori di funzionamento (definizione del body dell'endpoint mutiparti di be come Form(...))
+    3. scrivere funzione di conversione e/o semplici (i.e. conversione data messaggio, componente custom dell'icona del chatbot)
 

@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  chatbot-fe:
+    build: ./chatbot-fe
+    ports:
+      - "5173:80"
+    depends_on:
+      - chatbot-be
+
+  chatbot-be:
+    build: ./chatbot-be
+    ports:
+      - "8090:8090"
+    environment:
+      - NODE_ENV=production
+      - ENV=local
+      - DATA_FOLDER=/app/data
